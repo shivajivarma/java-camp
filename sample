@@ -1,0 +1,47 @@
+<dependency>
+        <groupId>org.springframework.boot</groupId>
+	        <artifactId>spring-boot-devtools</artifactId>
+	        <optional>true</optional>
+	    </dependency>
+      
+      
+      @Configuration
+public class WebMvcConfig extends WebMvcConfigurerAdapter {
+  /* Time, in seconds, to have the browser cache static resources (one week). */
+  // private static final int WEEK = 604800;
+  private static final int YEAR = 220752000;
+
+  @Override
+  public void addResourceHandlers(ResourceHandlerRegistry registry) {
+    /*registry
+     .addResourceHandler("/assets/lib/**")
+     .addResourceLocations("/assets/lib/")
+     .setCachePeriod(YEAR);
+    
+    registry
+    .addResourceHandler("/assets/img/**")
+    .addResourceLocations("/assets/img/")
+    .setCachePeriod(YEAR);*/
+    
+    registry
+    .addResourceHandler("/app/**")
+    .addResourceLocations("classpath:/BOOT-INF/classes/static/app/");
+	
+    //.addResourceLocations("file:d:/BOOT-INF/classes/static/app/");
+  }
+  
+  @Override
+  public void addViewControllers(ViewControllerRegistry registry) {
+	  registry.addViewController("/app/").setViewName("forward:/app/index.html");
+	  registry.addViewController("/app").setViewName("forward:/app/index.html");
+  }
+  
+  //TODO: CORS is temporarily excepted from security, for new ui development
+  @Override
+	public void addCorsMappings(CorsRegistry registry) {
+		registry.addMapping("/**")
+				.allowedOrigins("*")
+		.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS");
+	}
+  
+}
